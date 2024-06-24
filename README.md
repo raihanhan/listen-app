@@ -9,4 +9,5 @@ Author : Habib Aulia Raihan.
 Perguruan Tinggi : STMIK El Rahma Yogyakarta.
 NIM : 12201762.
 
-
+Jika ingin menjalankan aplikasi ini inisiasi terlebih dulu pada terminal menggunakan
+npm init
