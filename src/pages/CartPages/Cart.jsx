@@ -3,7 +3,11 @@ import Layout from "../../components/Layout/Layout";
 import { Trash } from 'lucide-react'
 import {  deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { db } from "../../FirebaseConfig";
+import BuyNowModal from "../../components/buyNowModal/BuyNowModal";
+import { Navigate } from "react-router-dom";
 
 const CartPage = () => {
     const cartItems = useSelector((state) => state.cart);
@@ -17,14 +21,71 @@ const CartPage = () => {
 
     // const cartQuantity = cartItems.length;
 
-    const cartItemTotal = cartItems.map(item => item.quantity).reduce((prevValue, currValue) => prevValue + currValue, 0);
-
-    const cartTotal = cartItems.map(item => item.price * item.quantity).reduce((prevValue, currValue) => prevValue + currValue, 0);
+    
+    const cartTotal = cartItems.map(item => item.price * 1).reduce((prevValue, currValue) => prevValue + currValue, 0);
 
 
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }, [cartItems])
+    // user
+    const user = JSON.parse(localStorage.getItem('users'))
+
+    // Buy Now Function
+    const [addressInfo, setAddressInfo] = useState({
+        name: "",
+        cardNumber: "",
+        cvv: "",
+        expiryDate: "",
+        time: Timestamp.now(),
+        date: new Date().toLocaleString(
+            "en-US",
+            {
+                month: "short",
+                day: "2-digit",
+                year: "numeric",
+            }
+        )
+    });
+
+    const buyNowFunction = () => {
+        // validation 
+        if (addressInfo.name === "" || addressInfo.cardNumber=== "" || addressInfo.cvv === "" || addressInfo.expiryDate === "") {
+            return toast.error("All Fields are required")
+        }
+
+        // Order Info 
+        const orderInfo = {
+            cartItems,
+            addressInfo,
+            email: user.email,
+            userid: user.uid,
+            status: "confirmed",
+            time: Timestamp.now(),
+            date: new Date().toLocaleString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                }
+            )
+        }
+        try {
+            const orderRef = collection(db, 'order');
+            addDoc(orderRef, orderInfo);
+            setAddressInfo({
+                name: "",
+                cardNumber: "",
+                cvv: "",
+                expiryDate: "",
+            })
+            toast.success("Order Placed Successfull")
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     return (
         <Layout>
             <div className="container mx-auto max-w-7xl px-2 lg:px-0">
@@ -42,7 +103,7 @@ const CartPage = () => {
 
                                     <>
                                         {cartItems.map((item, index) => {
-                                            const { id, title, price, eventImageUrl, category } = item
+                                            const { title, price, eventImageUrl, category } = item
                                             return (
                                                 <div key={index} className="">
                                                     <li className="flex py-6 sm:py-6 ">
@@ -77,19 +138,6 @@ const CartPage = () => {
                                                         </div>
                                                     </li>
                                                     <div className="mb-2 flex">
-                                                        {/* <div className="min-w-24 flex">
-                                                            <button onClick={() => handleDecrement(id)} type="button" className="h-7 w-7" >
-                                                                -
-                                                            </button>
-                                                            <input
-                                                                type="text"
-                                                                className="mx-1 h-7 w-9 rounded-md border text-center"
-                                                                value={quantity}
-                                                            />
-                                                            <button onClick={() => handleIncrement(id)} type="button" className="flex h-7 w-7 items-center justify-center">
-                                                                +
-                                                            </button>
-                                                        </div> */}
                                                         <div className="ml-6 flex text-sm">
                                                             <button onClick={() => deleteCart(item)} type="button" className="flex items-center space-x-1 px-2 py-1 pl-0">
                                                                 <Trash size={12} className="text-red-500" />
@@ -120,7 +168,7 @@ const CartPage = () => {
                             <div>
                                 <dl className=" space-y-1 px-2 py-4">
                                     <div className="flex items-center justify-between">
-                                        <dt className="text-sm text-gray-800">Price ({cartItemTotal} item)</dt>
+                                        <dt className="text-sm text-gray-800">Price</dt>
                                         <dd className="text-sm font-medium text-gray-900">Rp. {cartTotal}</dd>
                                     </div>
                                     <div className="flex items-center justify-between border-y border-dashed py-4 ">
@@ -130,11 +178,13 @@ const CartPage = () => {
                                 </dl>
                                 <div className="px-2 pb-4 font-medium text-green-700">
                                     <div className="flex gap-4 mb-6">
-                                        <button
-                                            className="w-full px-4 py-3 text-center text-gray-100 bg-pink-600 border border-transparent dark:border-gray-700 hover:border-pink-500 hover:text-pink-700 hover:bg-pink-100 rounded-xl"
-                                        >
-                                            Buy now
-                                        </button>
+                                    {user? 
+                                    <BuyNowModal
+                                                addressInfo={addressInfo}
+                                                setAddressInfo={setAddressInfo}
+                                                buyNowFunction={buyNowFunction}
+                                            /> : <Navigate to={'/login'}/>
+                                        }
                                     </div>
                                 </div>
                             </div>

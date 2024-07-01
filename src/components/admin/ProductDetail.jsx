@@ -29,12 +29,14 @@ const ProductDetail = () => {
                 {/* text  */}
                 <h1 className=" text-xl text-pink-300 font-bold">All Events</h1>
                 {/* Add Product Button  */}
+                <div className="px-5 flex gap-6">
                 <Link to={'/addproduct'}>
                     <button className="px-5 py-2 bg-pink-50 border border-pink-100 rounded-lg">Add Event</button>
                 </Link>
                 <Link to={'/addarchive'}>
                     <button className="px-5 py-2 bg-pink-50 border border-pink-100 rounded-lg">Add Archive</button>
                 </Link>
+                </div>
             </div>
             {/* Loading  */}
             <div className="flex justify-center relative top-20">

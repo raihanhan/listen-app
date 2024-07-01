@@ -14,7 +14,7 @@ const AllArchives = () => {
     <div className="py-8">
             {/* Heading  */}
             <div className="">
-                <h1 className=" text-center mb-5 text-2xl font-semibold">Archives</h1>
+                <h1 className=" text-center mb-5 text-2xl font-semibold border-2 bg-gray-800 text-white">Archives</h1>
             </div>
 
             {/* main  */}
