@@ -27,7 +27,7 @@ const HomePageEventCard = () => {
         <div className="mt-10">
             {/* Heading  */}
             <div className="">
-                <h1 className=" text-center mb-5 text-2xl font-semibold">Events</h1>
+                <h1 className=" text-center mb-5 text-2xl font-semibold border-2 bg-gray-800 text-white">Events</h1>
             </div>
             {/* main  */}
             <section className="text-gray-600 body-font">
@@ -58,13 +58,13 @@ const HomePageEventCard = () => {
                                                 ?
                                                 
                                                 <button onClick={()=> deleteCart(item)}
-                                                 className=" bg-red-700 hover:bg-pink-600 w-full text-white py-[4px] rounded-lg font-bold">
+                                                 className=" bg-gray-800 hover:bg-gray-600 w-full text-white py-[4px] rounded-lg font-bold">
                                                     Delete
                                                 </button>
                                                 :
                                                 <button
                                                 onClick={()=> addCart(item)}
-                                                className=" bg-pink-500 hover:bg-pink-600 w-full text-white py-[4px] rounded-lg font-bold"
+                                                className=" bg-gray-700 hover:bg-gray-600 w-full text-white py-[4px] rounded-lg font-bold"
                                                 >
                                                     Add To Cart
                                                 </button>

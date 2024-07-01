@@ -22,5 +22,5 @@ Listen App uses a number of open source projects to work properly:
 - [Firebase/Firestore] 
 - [Firebase/Auth]
 
-And of course Listen App itself is open source with a [public repository][listen-app]
+And of course Listen App itself is open source with a [public repository][listen-app](https://github.com/raihanhan/listen-app.git)
  on GitHub.
