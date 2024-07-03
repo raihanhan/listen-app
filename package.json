@@ -25,6 +25,7 @@
     "react-tabs": "^6.0.2",
     "react-toast": "^1.0.3",
     "scroll": "^3.0.1",
+    "uuid": "^10.0.0",
     "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {

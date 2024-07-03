@@ -50,13 +50,14 @@ const ProductDetail = () => {
                             <th scope="col" className="h-12 px-6 text-md border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100 font-bold fontPara">S.No.</th>
                             <th scope="col" className="h-12 px-6 text-md border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100 font-bold fontPara">Image</th>
                             <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Title</th>
+                            <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Event id</th>
                             <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Price</th>
                             <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Date</th>
                             <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Action</th>
                             <th scope="col" className="h-12 px-6 text-md font-bold fontPara border-l first:border-l-0 border-pink-100 text-slate-700 bg-slate-100">Action</th>
                         </tr>
                         {getAllProduct.map((item,index)=>{
-                            const {id, title, price,date, eventImageUrl}=item
+                            const {id, idEvent, title, price,date, eventImageUrl}=item
                       
                         return(
                         <tr key={index} className="text-pink-300">
@@ -71,6 +72,10 @@ const ProductDetail = () => {
                             <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0
                              border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
                                 {title}
+                            </td>
+                            <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0
+                             border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
+                                {idEvent}
                             </td>
                             <td className="h-12 px-6 text-md transition duration-300 border-t border-l first:border-l-0
                              border-pink-100 stroke-slate-500 text-slate-500 first-letter:uppercase ">
