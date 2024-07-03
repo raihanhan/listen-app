@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 // import Loader from "../../components/loader/Loader";
 import myContext from "../../context/myContext";
@@ -6,6 +7,7 @@ const Ticket = () => {
 const user = JSON.parse(localStorage.getItem('users'));
  const context = useContext(myContext);
  const {getAllOrder } = context
+ const navigate = useNavigate()
     return (
         <Layout>
             <div className="mt-10">
@@ -17,13 +19,14 @@ const user = JSON.parse(localStorage.getItem('users'));
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-5 mx-auto">
                     <div className="flex flex-wrap -m-4">
-                        {getAllOrder.filter((obj) => obj.userid === user?.uid).map((order, index) => {
+                        {getAllOrder.filter((obj) => obj.userid === user?.uid).map((order, orderIndex) => {
 
                             return (
-                                <div key={index} className="p-4 w-full md:w-1/4"> {order.cartItems.map((item, index)=>{
-                                        const {title, price, eventImageUrl} = item
+                                <div key={orderIndex} className="p-4 w-full md:w-1/4"> 
+                                {order.cartItems.map((item, itemIndex)=>{
+                                        const { idEvent, title, price, eventImageUrl} = item
                                         return(
-                                            <div key = {index} className="h-full border border-gray-300 rounded-xl overflow-hidden shadow-md">
+                                            <div key ={`${orderIndex}-${itemIndex}`} className="h-full border border-gray-300 rounded-xl overflow-hidden shadow-md">
                                             <img
                                                 className="lg:h-80  h-96 w-full"
                                                 src={eventImageUrl}
@@ -39,6 +42,12 @@ const user = JSON.parse(localStorage.getItem('users'));
                                                     Rp.{price}
                                                 </h1>
                                             </div>
+                                            <button
+                                                onClick={()=> navigate(`/LivePage/${idEvent}`)}
+                                                className=" bg-gray-700 hover:bg-gray-600 w-full text-white py-[4px] rounded-lg font-bold"
+                                                >
+                                                    Watch
+                                                </button>
                                         </div>
                                         )
                                     })}

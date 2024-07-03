@@ -21,6 +21,8 @@ import UpdateProductPage from "./pages/admin/UpdateProductPage";
 import AllEvents from "./pages/EventsPage/EventsPage";
 import AllArchives from "./pages/ArchivesPage/ArchivesPage";
 import Ticket from "./pages/Ticket/Ticket";
+import LivePage from "./pages/LivePage/LivePage";
+
 const App = () => {
   return (
     <div>
@@ -58,6 +60,11 @@ const App = () => {
             <ProtectedRouteForAdmin>
             <UpdateProductPage/>
             </ProtectedRouteForAdmin>} />
+          <Route path="/livePage/:idEvent" element={
+            <ProtectedRouteForUser>
+              <LivePage/>
+              </ProtectedRouteForUser>}>
+          </Route>
         </Routes> 
         <Toaster/>
       </Router>

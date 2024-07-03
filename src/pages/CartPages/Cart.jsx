@@ -103,7 +103,7 @@ const CartPage = () => {
 
                                     <>
                                         {cartItems.map((item, index) => {
-                                            const { title, price, eventImageUrl, category } = item
+                                            const { title, price, eventImageUrl} = item
                                             return (
                                                 <div key={index} className="">
                                                     <li className="flex py-6 sm:py-6 ">
@@ -124,9 +124,6 @@ const CartPage = () => {
                                                                                 {title}
                                                                             </div>
                                                                         </h3>
-                                                                    </div>
-                                                                    <div className="mt-1 flex text-sm">
-                                                                        <p className="text-sm text-gray-500">{category}</p>
                                                                     </div>
                                                                     <div className="mt-1 flex items-end">
                                                                         <p className="text-sm font-medium text-gray-900">

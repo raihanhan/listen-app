@@ -6,7 +6,7 @@ import { db } from "../../FirebaseConfig";
 import { useNavigate } from "react-router";
 import Loader from "../../components/loader/Loader";
 import { SlActionUndo } from "react-icons/sl";
-
+import { v4 as uuidv4 } from 'uuid';
 const AddProductPage = () => {
     const context = useContext(myContext);
     const { loading, setLoading } = context;
@@ -16,9 +16,11 @@ const AddProductPage = () => {
 
     // event state
     const [event, setevent] = useState({
+        idEvent : uuidv4(),
         title: "",
         price: "",
         eventImageUrl: "",
+        liveUrl:"",
         description: "",
         time: Timestamp.now(),
         date: new Date().toLocaleString(
@@ -34,7 +36,7 @@ const AddProductPage = () => {
 
     // Add event Function
     const AddProductFunction = async () => {
-        if (event.title == "" || event.price == "" || event.eventImageUrl == "" || event.description == "") {
+        if (event.idEvent==""|| event.title == "" || event.price == "" || event.eventImageUrl == "" ||event.liveUrl =="" || event.description == "") {
             return toast.error("all fields are required")
         }
 
@@ -70,6 +72,21 @@ const AddProductPage = () => {
                     </div>
 
                     {/* Input One  */}
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="title"
+                            value={event.idEvent}
+                            onChange={(e) => {
+                                setevent({
+                                    ...event,
+                                    title: e.target.value
+                                })
+                            }}
+                            placeholder='Event Title'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
                     <div className="mb-3">
                         <input
                             type="text"
@@ -116,6 +133,22 @@ const AddProductPage = () => {
                                 })
                             }}
                             placeholder='Event Image Url'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="liveUrl"
+                            value={event.liveUrl}
+                            onChange={(e) => {
+                                setevent({
+                                    ...event,
+                                    liveUrl: e.target.value
+                                })
+                            }}
+                            placeholder='Event Url'
                             className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
                         />
                     </div>
