@@ -24,7 +24,7 @@ const user = JSON.parse(localStorage.getItem('users'));
                             return (
                                 <div key={orderIndex} className="p-4 w-full md:w-1/4"> 
                                 {order.cartItems.map((item, itemIndex)=>{
-                                        const { idEvent, title, price, eventImageUrl} = item
+                                        const { id, title, price, eventImageUrl} = item
                                         return(
                                             <div key ={`${orderIndex}-${itemIndex}`} className="h-full border border-gray-300 rounded-xl overflow-hidden shadow-md">
                                             <img
@@ -43,7 +43,7 @@ const user = JSON.parse(localStorage.getItem('users'));
                                                 </h1>
                                             </div>
                                             <button
-                                                onClick={()=> navigate(`/LivePage/${idEvent}`)}
+                                                onClick={()=> navigate(`/LivePage/${id}`)}
                                                 className=" bg-gray-700 hover:bg-gray-600 w-full text-white py-[4px] rounded-lg font-bold"
                                                 >
                                                     Watch
