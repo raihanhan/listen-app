@@ -1,117 +1,188 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {
+  Button,
+  Typography,
+  IconButton,
+  Navbar,
+  Collapse,
+  Badge,
+} from "@material-tailwind/react";
 import { FaTimes } from "react-icons/fa";
 import { CiMenuFries } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
-const Navbar =() => {
-  const [click, setClick] = useState(false);
-  const handleClick = () => setClick(!click)
-  const user=JSON.parse(localStorage.getItem('users'))
-  const Navigate = useNavigate();
+const NavbarComponent = () => {
+  const [openNav, setOpenNav] = useState(false);
+  const user = JSON.parse(localStorage.getItem("users"));
+  const navigate = useNavigate();
   const location = useLocation();
-  const cartItems = useSelector((state)=> state.cart)
-  const isActive = (path)=> location.pathname === path? 'bg-gray-900':'bg-gray-700';
-  const Logout=()=> {
-    localStorage.clear('users');
-    Navigate("/login")
-  }
+  const cartItems = useSelector((state) => state.cart);
+  const isActive = (path) =>
+    location.pathname === path ? "bg-blue-700 text-white" : "bg-transparent";
+  const Logout = () => {
+    localStorage.clear("users");
+    navigate("/login");
+  };
+
   const navList = (
-      <div className="lg:hidden block absolute top-16 w-full left-0 right-7 transition bg-gray-700">
-          <ul className="text-center text-xl p-20">
-            <Link spy= "true" smooth="true" to="/" >
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Home</li>
-            </Link>
-            <Link spy="true" smooth="true" to="/EventsPage" >
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Events</li>
-            </Link>
-            <Link spy="True" smooth="true" to="/ArchivesPage" >
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Archives</li>
-            </Link>
-            {user?.role==="user"&&<Link spy="true" smooth="true" to="Ticket" >
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Ticket</li>
-            </Link>}
-            {!user?<Link spy="True" smooth="true" to ="/login">
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Login</li>
-            </Link>:""}
-            {user?.role==="user"&&<Link spy="true" smooth="true" to="/Cart">
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">Cart({cartItems.length})</li>
-            </Link>}
-            {user?.role==="user"&&<Link spy="true" smooth="true" to="/user-dashboard">
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">{user?.name}</li>
-            </Link>}
-            {user?.role==="admin"&&<Link spy="true" smooth="true" to="/admin-dashboard">
-                <li className="my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded">{user?.name}</li>
-            </Link>}
-            {user&&
-                <li className=" cursor-pointer my-4 py-4 border-b border-black hover:bg-gray-400 hover:rounded" onClick={Logout}>Logout</li>
-             }
-          </ul>
-      </div>
-  )
-  return(
-    <nav className="bg-gray-700">
-      <div className="h-10vh flex justify-between z-50 text-white lg:py-5 px-20 py-4">
-        <div className="flex items-center flex-1">
-          <span className="text-3xl font-bold">Listen Nation</span>
-        </div>
-        <div className="lg:flex md:flex lg:flex-1 items-center justify-end font-normal hidden">
-          <div className="flex-10">
-            <ul className="flex gap-8 mr-16 text-[18px]">
-              <Link spy="true" smooth="true" to="/" >
-                <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/')}`}>Home</li>
-              </Link>
-              <Link spy="true" smooth="true" to="/EventsPage" >
-                <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/EventsPage')}`}>Events</li>
-              </Link>
-              <Link spy="true" smooth="true" to="/ArchivesPage" >
-                <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/ArchivesPage')}`}>Archives</li>
-              </Link>
-              {user?.role === "user" && (
-                <Link spy="true" smooth="true" to="/Ticket" >
-                  <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/Ticket')}`}>Ticket</li>
-                </Link>
-              )}
-              {user?.role === "user" && (
-                <Link spy="true" smooth="true" to="/Cart">
-                  <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/Cart')}`}>Cart({cartItems.length})</li>
-                </Link>
-              )}
-              {user?.role === "user" && (
-                <Link spy="true" smooth="true" to="/user-dashboard">
-                  <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/user-dashboard')}`}>{user?.name}</li>
-                </Link>
-              )}
-              {user?.role === "admin" && (
-                <Link spy="true" smooth="true" to="/admin-dashboard">
-                  <li className={`px-3 py-2 text-gray-100 rounded-lg hover:bg-gray-200 hover:text-black ${isActive('/admin-dashboard')}`}>{user?.name}</li>
-                </Link>
-              )}
-              {!user ? (
-                <li><Link spy="true" smooth="true" to="/login">
-                  <button className="bg-gray-800 cursor-pointer px-3 py-2 border-2 rounded-lg border-white hover:bg-gray-400 hover:rounded">
-                    Login
-                  </button>
-                </Link></li>
-              ) : ""}
-              {user && (
-                <li><button 
-                className="cursor-pointer px-3 py-2 border-2 rounded-lg border-white hover:bg-gray-400 hover:rounded" 
-                onClick={Logout}>
-                 Logout
-                </button></li>
-              )}
-            </ul>
-          </div>
-        </div>
-        <div>
-          {click && navList}
-        </div>
-        <button className="block sm:hidden md:hidden transition" onClick={handleClick}>
-          {click ? <FaTimes /> : <CiMenuFries />}
-        </button>
-      </div>
-    </nav>
+    <ul className="flex flex-col lg:flex-row gap-1 lg:gap-5 w-full items-center">
+      <Link to="/">
+        <li
+          className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+            "/"
+          )}`}
+        >
+          Home
+        </li>
+      </Link>
+      <Link to="/EventsPage">
+        <li
+          className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+            "/EventsPage"
+          )}`}
+        >
+          Events
+        </li>
+      </Link>
+      <Link to="/ArchivesPage">
+        <li
+          className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+            "/ArchivesPage"
+          )}`}
+        >
+          Archives
+        </li>
+      </Link>
+      {user?.role === "user" && (
+        <Link to="/Ticket">
+          <li
+            className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+              "/Ticket"
+            )}`}
+          >
+            Ticket
+          </li>
+        </Link>
+      )}
+      {user?.role === "user" && (
+        <Badge color="red" content={cartItems.length} className="mr-2">
+          <Link to="/Cart">
+            <li
+              className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+                "/Cart"
+              )}`}
+            >
+              <MdOutlineShoppingCart className="text-xl" />
+            </li>
+          </Link>
+        </Badge>
+      )}
+      {user?.role === "user" && (
+        <Link to="/user-dashboard">
+          <li
+            className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+              "/user-dashboard"
+            )}`}
+          >
+            {user?.name}
+          </li>
+        </Link>
+      )}
+      {user?.role === "admin" && (
+        <Link to="/admin-dashboard">
+          <li
+            className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
+              "/admin-dashboard"
+            )}`}
+          >
+            {user?.name}
+          </li>
+        </Link>
+      )}
+      {user && (
+        <li
+          className="cursor-pointer px-3 py-2 text-white rounded-lg hover:bg-red-700 bg-red-500"
+          onClick={Logout}
+        >
+          Logout
+        </li>
+      )}
+    </ul>
   );
-}
-export default Navbar;
+
+  return (
+    <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+      <div className="flex items-center justify-between text-blue-gray-900">
+        <Typography
+          as="a"
+          href="#"
+          className="mr-4 text-3xl md:text-2xl cursor-pointer font-bold  from-blue-700 to-blue-900 bg-clip-text text-transparent bg-gradient-to-r"
+        >
+          Listen Nation
+        </Typography>
+        <div className="flex items-center gap-4">
+          <div className="mr-4 hidden lg:block">{navList}</div>
+          <div className="flex items-center gap-x-1">
+            {!user && (
+              <>
+                <Button
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block capitalize"
+                >
+                  <Link to="/login">
+                    <span>Log In</span>
+                  </Link>
+                </Button>
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block capitalize"
+                >
+                  <Link to="/signup">
+                    <span>Sign Up</span>
+                  </Link>
+                </Button>
+              </>
+            )}
+          </div>
+          <IconButton
+            variant="text"
+            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+            ripple={false}
+            onClick={() => setOpenNav(!openNav)}
+          >
+            {openNav ? (
+              <FaTimes className="h-6 w-6" />
+            ) : (
+              <CiMenuFries className="h-6 w-6" />
+            )}
+          </IconButton>
+        </div>
+      </div>
+      <Collapse open={openNav}>
+        {navList}
+        <div className="flex items-center gap-x-1 mt-4">
+          {!user && (
+            <>
+              <Button fullWidth variant="text" size="sm">
+                <Link to="/login">
+                  <span>Log In</span>
+                </Link>
+              </Button>
+              <Button fullWidth variant="gradient" size="sm">
+                <Link to="/signup">
+                  <span>Sign Up</span>
+                </Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </Collapse>
+    </Navbar>
+  );
+};
+
+export default NavbarComponent;
