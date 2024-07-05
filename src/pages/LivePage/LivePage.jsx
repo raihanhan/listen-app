@@ -9,12 +9,12 @@ import Loader from "../../components/loader/Loader";
 const LivePage = () => {
   const { loading, setLoading } = useContext(myContext);
   const [events, setEvent] = useState(null);  // Use `null` to indicate no data initially
-  const { id } = useParams(); // Ensure parameter name matches the one in your route
+  const { idEvent } = useParams(); // Ensure parameter name matches the one in your route
 
   const getEventData = async () => {
     setLoading(true);
     try {
-      const docRef = doc(db, "events", id); // Ensure 'events' is the correct collection name
+      const docRef = doc(db, "events", idEvent); // Ensure 'events' is the correct collection name
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setEvent(docSnap.data());
@@ -31,7 +31,7 @@ const LivePage = () => {
 
   useEffect(() => {
     getEventData();
-  }, [id]); // Include idEvent to refetch data when id changes
+  }, [idEvent]); // Include idEvent to refetch data when id changes
 
   return (
     <Layout>
@@ -57,7 +57,7 @@ const LivePage = () => {
             </div>
           </div>
         ) : (
-          <p>No event found for ID {id}.</p>
+          <p>No event found for ID {idEvent}.</p>
         )}
       </section>
     </Layout>
