@@ -11,10 +11,6 @@ const user = JSON.parse(localStorage.getItem('users'));
     return (
         <Layout>
             <div className="mt-10">
-            {/* Heading  */}
-            <div className="">
-                <h1 className=" text-center mb-5 text-2xl font-semibold border-2 bg-gray-800 text-white">Events</h1>
-            </div>
             {/* main  */}
             <section className="text-gray-600 body-font">
                 <div className="container px-5 py-5 mx-auto">
