@@ -33,9 +33,9 @@ const ProductDetail = () => {
                 <Link to={'/addproduct'}>
                     <button className="px-5 py-2 bg-pink-50 border border-pink-100 rounded-lg">Add Event</button>
                 </Link>
-                <Link to={'/addarchive'}>
+                {/* <Link to={'/addarchive'}>
                     <button className="px-5 py-2 bg-pink-50 border border-pink-100 rounded-lg">Add Archive</button>
-                </Link>
+                </Link> */}
                 </div>
             </div>
             {/* Loading  */}

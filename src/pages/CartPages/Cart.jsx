@@ -3,11 +3,11 @@ import Layout from "../../components/Layout/Layout";
 import { Trash } from "lucide-react";
 import { deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { db } from "../../FirebaseConfig";
 import BuyNowModal from "../../components/buyNowModal/BuyNowModal";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Card } from "@material-tailwind/react";
 
 const CartPage = () => {
@@ -18,7 +18,11 @@ const CartPage = () => {
     dispatch(deleteFromCart(item));
     toast.success("Delete cart");
   };
-
+  const clearCart = () => {
+    cartItems.forEach((item) => {
+      dispatch(deleteFromCart(item));
+    });
+  };
   // const cartQuantity = cartItems.length;
 
   const cartTotal = cartItems
@@ -62,7 +66,7 @@ const CartPage = () => {
       addressInfo,
       email: user.email,
       userid: user.uid,
-      status: "confirmed",
+      status: "pending approval",
       time: Timestamp.now(),
       date: new Date().toLocaleString("en-US", {
         month: "short",
@@ -80,6 +84,7 @@ const CartPage = () => {
         expiryDate: "",
       });
       toast.success("Order Placed Successfull");
+      clearCart();
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +107,7 @@ const CartPage = () => {
             <div className="flex flex-col gap-6 sm:gap-10">
               {cartItems.length > 0 ? (
                 <Card className="rounded-lg shadow-md h-fit p-2">
-                  <ul className="divide-y divide-gray-200">
+                  <ul className="divide-y divide-gray-200 gap-10">
                     {cartItems.map((item, index) => (
                       <li key={index} className="flex">
                         <img
@@ -178,14 +183,14 @@ const CartPage = () => {
                       setAddressInfo={setAddressInfo}
                       buyNowFunction={buyNowFunction}
                     />
-                    <div className="mt-6">
+                    {/* <div className="mt-6">
                       <Link
                         to="/Cart"
                         className="block w-full px-4 py-2 text-center bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700"
                       >
                         Proceed to Checkout
                       </Link>
-                    </div>
+                    </div> */}
                   </>
                 ) : (
                   <Navigate
