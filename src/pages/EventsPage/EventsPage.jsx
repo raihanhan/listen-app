@@ -27,13 +27,13 @@ const AllEvents = () => {
   }, [cartItems]);
   return (
     <Layout>
-      <div className="flex flex-col items-center justify-center mt-10">
+      <div className="flex flex-col items-center justify-center mt-10 mb-10">
         {/* Heading */}
         <Typography variant="h4" className="w-full text-center">
           Events
         </Typography>
         {/* Main */}
-        <section className="flex flex-grow gap-4 mt-4 max-w-5xl">
+        <section className="flex flex-wrap gap-6 mt-4 max-w-5xl">
           {getAllProduct.slice(0, 8).map((item, index) => {
             const { id, title, price, eventImageUrl } = item;
             return (

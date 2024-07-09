@@ -5,11 +5,10 @@ import myContext from "../../context/myContext";
 import { useParams } from "react-router-dom";
 import { db } from "../../FirebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import Loader from "../../components/loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
-import { Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 const EventDetail = () => {
   const context = useContext(myContext);
   const { loading, setLoading } = context;

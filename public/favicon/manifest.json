@@ -3,6 +3,7 @@
     "short_name": "ListenApp",
     "start_url": "/",
     "display": "standalone",
+    "display_override": ["fullscreen", "minimal-ui","window-controls-overlay"],
     "background_color": "#fff",
     "description": "Pengalaman menonton konser musik dari rumah.",
     "theme_color": "#ffffff",
@@ -29,5 +30,19 @@
            "type": "image/png",
            "purpose": "maskable"
            }
-    ]
+    ],
+    "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1877x974",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshoot-mobile.png",
+      "sizes": "822x1257",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
   }

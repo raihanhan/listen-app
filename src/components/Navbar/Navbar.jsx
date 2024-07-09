@@ -46,7 +46,7 @@ const NavbarComponent = () => {
           Events
         </li>
       </Link>
-      <Link to="/ArchivesPage">
+      {/* <Link to="/ArchivesPage">
         <li
           className={`px-3 py-2 text-black rounded-lg hover:bg-blue-700 hover:text-white ${isActive(
             "/ArchivesPage"
@@ -54,7 +54,7 @@ const NavbarComponent = () => {
         >
           Archives
         </li>
-      </Link>
+      </Link> */}
       {user?.role === "user" && (
         <Link to="/Ticket">
           <li
