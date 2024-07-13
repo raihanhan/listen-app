@@ -2,14 +2,23 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
 import myContext from "../../context/myContext";
 import { useContext } from "react";
-import { Card, Typography, CardBody, Button } from "@material-tailwind/react";
+import { Card, Typography, CardBody, Button,Spinner } from "@material-tailwind/react";
+import { SlCalender } from "react-icons/sl";
+import { FaMoneyBill } from "react-icons/fa";
+import { FaClock } from "react-icons/fa6";
 
 const Ticket = () => {
     const user = JSON.parse(localStorage.getItem('users'));
     const context = useContext(myContext);
-    const { getAllOrder } = context;
+    const { loading, getAllOrder } = context;
     const navigate = useNavigate();
-
+    if (loading) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <Spinner color="blue" className="h-16 w-16" />
+          </div>
+        );
+      }
     return (
         <Layout>
             <div className="flex flex-col items-center justify-center mt-10">
@@ -20,10 +29,10 @@ const Ticket = () => {
                 {/* main */}
                 <section className="flex flex-wrap gap-4 mt-4 max-w-5xl">
                     {getAllOrder
-                        .filter((obj) => obj.userid === user?.uid && obj.status !== "pending approval")
+                        .filter((obj) => obj.userid === user?.uid && obj.status !== "pending approval" && obj.status !== "rejected")
                         .map((order, orderIndex) => (
                             order.cartItems.map((item, itemIndex) => {
-                                const { id, title, price, eventImageUrl } = item;
+                                const { id, title, price, eventImageUrl ,start, startTime} = item;
                                 return (
                                     <Card
                                         key={`${orderIndex}-${itemIndex}`}
@@ -35,12 +44,27 @@ const Ticket = () => {
                                             alt="Event"
                                         />
                                         <CardBody className="p-4">
-                                            <Typography variant="h6" color="gray">
-                                                {title.substring(0, 25)}
-                                            </Typography>
-                                            <Typography variant="h6" color="gray" className="mb-3">
+                                        <Typography variant="h6" color="gray" className="mb-3">
+                                            {title.substring(0, 25)}
+                                                </Typography>
+                                            <div className="flex items-center mb-3 space-x-2">
+                                                <FaMoneyBill />
+                                                <Typography variant="h6" color="gray">
                                                 Rp.{price}
-                                            </Typography>
+                                                </Typography>
+                                            </div>
+                                            <div className="flex items-center mb-3 space-x-2">
+                                                <SlCalender />
+                                                <Typography variant="h6" color="gray">
+                                                {start}
+                                                </Typography>
+                                            </div>
+                                            <div className="flex items-center mb-3 space-x-2">
+                                                <FaClock />
+                                                <Typography variant="h6" color="gray">
+                                                {startTime}
+                                                </Typography>
+                                            </div>
                                             <div className="flex justify-center">
                                                 <Button
                                                     onClick={() => navigate(`/LivePage/${id}`)}

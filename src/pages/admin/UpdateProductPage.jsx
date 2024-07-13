@@ -18,10 +18,14 @@ const UpdateProductPage = () => {
 
     // event state
     const [event, setEvent] = useState({
+        idEvent: "",
         title: "",
         price: "",
         eventImageUrl: "",
         description: "",
+        liveUrl:"",
+        start:"",
+        startTime:"",
         time: Timestamp.now(),
         date: new Date().toLocaleString(
             "en-US",
@@ -41,12 +45,16 @@ const UpdateProductPage = () => {
             //   console.log(event.data())
             const event = eventTemp.data();
             setEvent({
-                title: event?.title,
-                price: event?.price,
-                eventImageUrl: event?.eventImageUrl,
-                description: event?.description,
-                time: event?.time,
-                date: event?.date
+                idEvent:        event?.idEvent,
+                title:          event?.title,
+                price:          event?.price,
+                eventImageUrl:  event?.eventImageUrl,
+                liveUrl:        event?.liveUrl,
+                start:          event?.start,
+                startTime:      event?.startTime,
+                description:    event?.description,
+                time:           event?.time,
+                date:           event?.date
             })
             setLoading(false);
 
@@ -88,7 +96,21 @@ const UpdateProductPage = () => {
                             Update event
                         </h2>
                     </div>
-
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="idEvent"
+                            value={event.idEvent}
+                            onChange={(e) => {
+                                setEvent({
+                                    ...event,
+                                    idEvent: e.target.value
+                                })
+                            }}
+                            placeholder='event id'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
                     {/* Input One  */}
                     <div className="mb-3">
                         <input
@@ -123,6 +145,37 @@ const UpdateProductPage = () => {
                         />
                     </div>
 
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="start"
+                            value={event.start}
+                            onChange={(e) => {
+                                setEvent({
+                                    ...event,
+                                    start: e.target.value
+                                })
+                            }}
+                            placeholder='event Start date'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="startTime"
+                            value={event.startTime}
+                            onChange={(e) => {
+                                setEvent({
+                                    ...event,
+                                    startTime: e.target.value
+                                })
+                            }}
+                            placeholder='event Start time'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+
                     {/* Input Three  */}
                     <div className="mb-3">
                         <input
@@ -133,6 +186,21 @@ const UpdateProductPage = () => {
                                 setEvent({
                                     ...event,
                                     eventImageUrl: e.target.value
+                                })
+                            }}
+                            placeholder='event Image Url'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="eventLiveUrl"
+                            value={event.liveUrl}
+                            onChange={(e) => {
+                                setEvent({
+                                    ...event,
+                                    liveUrl: e.target.value
                                 })
                             }}
                             placeholder='event Image Url'

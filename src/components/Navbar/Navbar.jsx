@@ -23,7 +23,7 @@ const NavbarComponent = () => {
     location.pathname === path ? "bg-blue-700 text-white" : "bg-transparent";
   const Logout = () => {
     localStorage.clear("users");
-    navigate("/login");
+    navigate("/");
   };
 
   const navList = (

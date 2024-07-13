@@ -99,6 +99,42 @@ function MyState({ children }) {
                 toast.error('Failed to send notification email');
             });
     };
+    const rejectTransaction = async (orderId) => {
+        try {
+            const orderRef = doc(db, "order", orderId);
+            await updateDoc(orderRef, {
+                status: "rejected",
+            });
+            toast.success("Order Rejected Successfully");
+    
+            // Send email notification about the rejection
+            const order = getAllOrder.find(order => order.id === orderId);
+            if (order) {
+                sendRejectionEmailNotification(order);
+            }
+        } catch (error) {
+            console.error("Error rejecting transaction: ", error);
+            toast.error("Failed to reject order");
+        }
+    };
+    
+    const sendRejectionEmailNotification = (order) => {
+        const templateParams = {
+            to_name: order.addressInfo.name,
+            from_name: 'Listen App',
+            to_email: order.email,
+            message: `Transaksi ${order.id} ditolak. Silakan hubungi dukungan kami untuk lebih lanjut.`,
+        };
+    
+        emailjs.send('service_xa8op9h', 'template_5q797un', templateParams, 'ZeAtbmrEWViqH2JVq')
+            .then((response) => {
+                console.log('Rejection email sent successfully:', response.text);
+                toast.success('Notification email sent successfully');
+            }, (error) => {
+                console.log('Failed to send rejection email:', error.text);
+                toast.error('Failed to send rejection email');
+            });
+    };
 
     useEffect(() => {
         getAllProductFunction();
@@ -113,7 +149,8 @@ function MyState({ children }) {
             getAllProductFunction,
             getAllOrder,
             deleteEvent,
-            approveTransaction
+            approveTransaction,
+            rejectTransaction
         }}>
             {children}
         </MyContext.Provider>

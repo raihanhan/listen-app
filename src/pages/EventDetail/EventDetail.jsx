@@ -4,17 +4,19 @@ import { useContext, useEffect, useState } from "react";
 import myContext from "../../context/myContext";
 import { useParams } from "react-router-dom";
 import { db } from "../../FirebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc,Timestamp, addDoc, collection } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
 import { Button } from "@material-tailwind/react";
+import BuyNowModal from "../../components/buyNowModal/BuyNowModal";
+
 const EventDetail = () => {
   const context = useContext(myContext);
   const { loading, setLoading } = context;
   const [events, setProduct] = useState("");
   const { id } = useParams();
-
+  const user = JSON.parse(localStorage.getItem("users"));
   const getProductData = async () => {
     setLoading(true);
     try {
@@ -38,9 +40,68 @@ const EventDetail = () => {
     dispatch(deleteFromCart(item));
     toast.success("Delete cart");
   };
+  const clearCart = () => {
+    cartItems.forEach((item) => {
+      dispatch(deleteFromCart(item));
+    });
+  };
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // Buy Now Function
+  const [addressInfo, setAddressInfo] = useState({
+    name: "",
+    cardNumber: "",
+    cvv: "",
+    expiryDate: "",
+    time: Timestamp.now(),
+    date: new Date().toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }),
+  });
+  const buyNowFunction = () => {
+    // validation
+    if (
+      addressInfo.name === "" ||
+      addressInfo.cardNumber === "" ||
+      addressInfo.cvv === "" ||
+      addressInfo.expiryDate === ""
+    ) {
+      return toast.error("All Fields are required");
+    }
+
+    // Order Info
+    const orderInfo = {
+      cartItems,
+      addressInfo,
+      email: user.email,
+      userid: user.uid,
+      status: "pending approval",
+      time: Timestamp.now(),
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    };
+    try {
+      const orderRef = collection(db, "order");
+      addDoc(orderRef, orderInfo);
+      setAddressInfo({
+        name: "",
+        cardNumber: "",
+        cvv: "",
+        expiryDate: "",
+      });
+      toast.success("Order Placed Successfull");
+      clearCart();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getProductData();
@@ -84,12 +145,24 @@ const EventDetail = () => {
               alt={events?.title}
             />
             <div className="w-full lg:w-1/2">
-              <h2 className="text-xl lg:text-2xl font-semibold leading-loose tracking-wide text-gray-700 dark:text-gray-300">
+              <h2 className="text-xl lg:text-2xl font-semibold leading-loose tracking-wide text-gray-700 dark:text-gray-300 gap-4 mb-5">
                 {events?.title}
               </h2>
+              <h2 className="mb-2 text-lg font-bold text-gray-700 dark:text-gray-400">
+                  Price:
+              <p className="text-2xl font-semibold text-gray-700 dark:text-gray-400 mb-4 gap-4">
+               Rp {events?.price}
+              </p></h2>
+              <h2 className="mb-2 text-lg font-bold text-gray-700 dark:text-gray-400">
+                  Tanggal:
               <p className="text-2xl font-semibold text-gray-700 dark:text-gray-400 mb-4">
-                Rp {events?.price}
-              </p>
+               {events?.start}
+              </p></h2>
+              <h2 className="mb-2 text-lg font-bold text-gray-700 dark:text-gray-400">
+                  Jam :
+              <p className="text-2xl font-semibold text-gray-700 dark:text-gray-400 mb-4">
+               {events?.startTime}
+              </p></h2>
               <div className="mb-6">
                 <h2 className="mb-2 text-lg font-bold text-gray-700 dark:text-gray-400">
                   Description:
@@ -98,9 +171,14 @@ const EventDetail = () => {
                   {events?.description}
                 </p>
               </div>
-              <div className="flex flex-col gap-3">
+              {user &&(
+              <div className="flex flex-col gap-3 px-4 pb-4">
                 <Button color="blue" className="w-full capitalize">
-                  Buy Now
+                <BuyNowModal
+                      addressInfo={addressInfo}
+                      setAddressInfo={setAddressInfo}
+                      buyNowFunction={buyNowFunction}
+                    />
                 </Button>
                 {cartItems.some((p) => p.id === events.id) ? (
                   <Button
@@ -122,6 +200,7 @@ const EventDetail = () => {
                   </Button>
                 )}
               </div>
+              )}
             </div>
           </div>
         )}

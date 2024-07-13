@@ -7,6 +7,7 @@
     "background_color": "#fff",
     "description": "Pengalaman menonton konser musik dari rumah.",
     "theme_color": "#ffffff",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "192x192.png",
@@ -34,7 +35,7 @@
     "screenshots": [
     {
       "src": "screenshot-desktop.png",
-      "sizes": "1877x974",
+      "sizes": "1890x972",
       "type": "image/png",
       "form_factor": "wide"
     },

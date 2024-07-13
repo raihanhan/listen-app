@@ -21,6 +21,8 @@ const AddProductPage = () => {
         price: "",
         eventImageUrl: "",
         liveUrl:"",
+        start:"",
+        startTime:"",
         description: "",
         time: Timestamp.now(),
         date: new Date().toLocaleString(
@@ -36,7 +38,7 @@ const AddProductPage = () => {
 
     // Add event Function
     const AddProductFunction = async () => {
-        if (event.idEvent==""|| event.title == "" || event.price == "" || event.eventImageUrl == "" ||event.liveUrl =="" || event.description == "") {
+        if (event.idEvent==""|| event.title == "" || event.price == "" || event.eventImageUrl == "" ||event.liveUrl =="" || event.description == ""|| event.start == ""|| event.startTime == "") {
             return toast.error("all fields are required")
         }
 
@@ -75,15 +77,15 @@ const AddProductPage = () => {
                     <div className="mb-3">
                         <input
                             type="text"
-                            name="title"
+                            name="idEvent"
                             value={event.idEvent}
                             onChange={(e) => {
                                 setevent({
                                     ...event,
-                                    title: e.target.value
+                                    idEvent: e.target.value
                                 })
                             }}
-                            placeholder='Event Title'
+                            placeholder='Event id'
                             className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
                         />
                     </div>
@@ -119,6 +121,39 @@ const AddProductPage = () => {
                             className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
                         />
                     </div>
+
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="start"
+                            value={event.start}
+                            onChange={(e) => {
+                                setevent({
+                                    ...event,
+                                    start: e.target.value
+                                })
+                            }}
+                            placeholder='Event Start Date'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            name="startTime"
+                            value={event.startTime}
+                            onChange={(e) => {
+                                setevent({
+                                    ...event,
+                                    startTime: e.target.value
+                                })
+                            }}
+                            placeholder='Event Start Time'
+                            className='bg-pink-50 border text-pink-300 border-pink-200 px-2 py-2 w-96 rounded-md outline-none placeholder-pink-300'
+                        />
+                    </div>
+
 
                     {/* Input Three  */}
                     <div className="mb-3">
